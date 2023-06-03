@@ -1,4 +1,4 @@
-//we implement thhe class Atom that inherits from the Cell class
+//we implement the class Atom that inherits from the Cell class
 
 class Atom extends Cell{ 
     //constructors
