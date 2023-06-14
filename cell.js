@@ -93,7 +93,7 @@ class Cell {
       while (i < this.cells.length && this.cells[i] != null) i++;
       if (i < this.cells.length) this.cells[i] = c;
       else {
-        print("Cell: INSERT FAILED");
+        print("Cell: INSERT FAILED a", this.cells.length);
         // c.tell();
       }
     } else {

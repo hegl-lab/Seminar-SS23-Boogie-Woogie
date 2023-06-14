@@ -20,7 +20,7 @@ class VLine extends Cell {
     this.xMin = this.x - 5 - int(random(5));
     this.xMax = this.x + 4 + int(random(6));
     //5% probability for a very wide vertical
-    if (super.PROB(0.05)) {
+    if (this.PROB(0.05)) {
       this.xMin -= int(random(8, 15));
       this.xMax += int(random(8, 15));
     }
@@ -29,11 +29,11 @@ class VLine extends Cell {
     this.clr = new Color(YELLOW);
     this.hori = false;
     this.verti = true;
-    this.stoppi = super.PROB(0.8);
+    this.stoppi = this.PROB(0.8);
     this.epsilon = 0;
     this.age = 0;
     this.activation = 300; //HLines must be setup first
-    this.midlifetrigger = super.activation + 1000;
+    this.midlifetrigger = this.activation + 1000;
   }
 
   setxy(x, y) {
@@ -48,7 +48,7 @@ class VLine extends Cell {
     //Kind of first version of the setpup
     //so it can be run separately already
 
-    super.cells = new Array(NRATOMS);
+    this.cells = new Array(NRATOMS);
   }
   setup() {
     //setup: creates the internal content for this VLine,
@@ -59,8 +59,8 @@ class VLine extends Cell {
     for (var i = 0; i < NRRHYTHMPLANES; i++) {
       var a = new Atom(this, null);
       a.clr = new Color6(RED, YELLOW, BLUE, WHITE, GRIS, NAVY);
-      a.xMin = super.xCtr() - 2;
-      a.xMax = super.xCtr() + 3;
+      a.xMin = this.xCtr() - 2;
+      a.xMax = this.xCtr() + 3;
       var y = int(random(parent.yMin + 1, parent.yMax - 1));
       a.yMin = y - 1;
       a.yMax = y + 1;
@@ -69,7 +69,7 @@ class VLine extends Cell {
       a.stoppi = true;
       a.epsilon = (this.xMax - this.xMin) / 7; //was /2
       a.ratio = 0.5; //bit wider //was square-ish
-      super.insert(a);
+      this.insert(a);
     } //end for
     this.purge1();
     this.purge2();
@@ -79,10 +79,10 @@ class VLine extends Cell {
   purge1() {
     //meant for a collection of Atom cells supposedly "rhytmic" on Vline
     //eliminate some of the cells inside this which are too close anyhow
-    for (var i = 0; i < super.cells.length; i++) {
-      for (var j = 0; j < super.cells.length; j++) {
-        var ci = super.cells[i];
-        var cj = super.cells[j];
+    for (var i = 0; i < this.cells.length; i++) {
+      for (var j = 0; j < this.cells.length; j++) {
+        var ci = this.cells[i];
+        var cj = this.cells[j];
         if (i != j && ci != null && cj != null) {
           if (
             (!cj.biparental() &&
@@ -93,7 +93,7 @@ class VLine extends Cell {
                 cj.coparent.yMax - cj.coparent.yMin + ci.epsilon)
             //meaning: keep extra distance from the intersection plane cells such as cj
           )
-            if (!super.cells[i].biparental()) super.cells[i] = null;
+            if (!this.cells[i].biparental()) this.cells[i] = null;
         }
       }
     }
@@ -106,14 +106,14 @@ class VLine extends Cell {
   purge2() {
     //eliminate atoms inside this VLine but outside the lozenge
     if (parent.type == "Canvas")
-      if (super.cells != null)
-        for (var i = 0; i < super.cells.length; i++)
-          if (super.cells[i] != null)
+      if (this.cells != null)
+        for (var i = 0; i < this.cells.length; i++)
+          if (this.cells[i] != null)
             if (
-              super.cells[i].xMax < parent.xMin(super.cells[i].yCtr()) ||
-              super.cells[i].xMin > parent.xMax(super.cells[i].yCtr())
+              this.cells[i].xMax < parent.xMin(this.cells[i].yCtr()) ||
+              this.cells[i].xMin > parent.xMax(this.cells[i].yCtr())
             )
-              super.cells[i] = null;
+              this.cells[i] = null;
     if (verbose) {
       print("VLine purge2 @");
       print(age);
@@ -126,14 +126,14 @@ class VLine extends Cell {
     //PS: warning: don't run this purge action too early.
     for (var i = 0; i < cells.length; i++) {
       if (
-        super.cells[i] != null &&
-        super.cells[i].xMax - super.cells[i].xMin + 1 <
+        this.cells[i] != null &&
+        this.cells[i].xMax - this.cells[i].xMin + 1 <
           0.9 * (this.xMax - this.xMin) &&
-        (super.cells[i].coparent == null ||
-          super.cells[i].xMax - super.cells[i].xMin + 1 <
-            0.9 * (super.cells[i].coparent.xMax - super.cells[i].coparent.xMin))
+        (this.cells[i].coparent == null ||
+          this.cells[i].xMax - this.cells[i].xMin + 1 <
+            0.9 * (this.cells[i].coparent.xMax - this.cells[i].coparent.xMin))
       )
-        super.cells[i] = null;
+        this.cells[i] = null;
     } //end for
     if (verbose) {
       print("VLine purge3 @");
@@ -144,6 +144,6 @@ class VLine extends Cell {
   //TRIGGERED ACTION
   trigger() {
     this.purge3();
-    super.compress();
+    this.compress();
   }
 } //end VLine

@@ -1,6 +1,6 @@
 //Copyright (C) <2013> <Loe Feijs and TU/e
 
-//some notes regarding conversion: super was converted to this / casting to instanceof / cells Array had a trickier conversion(might be faulty)
+//some notes regarding conversion: this was converted to this / casting to instanceof / cells Array had a trickier conversion(might be faulty)
 class Canvas extends Cell {
   //CONCEPTION
 
@@ -20,20 +20,20 @@ class Canvas extends Cell {
   }
 
   minX(y) {
-    if (y < super.yCtr()) return int(this.xMin + (super.yCtr() - y));
+    if (y < this.yCtr()) return int(this.xMin + (this.yCtr() - y));
     else return int(this.xMin + (y - yCtr()));
   }
   maxX(y) {
-    if (y < super.yCtr()) return int(this.xMax - (super.yCtr() - y));
-    else return int(this.xMax - (y - super.yCtr()));
+    if (y < this.yCtr()) return int(this.xMax - (this.yCtr() - y));
+    else return int(this.xMax - (y - this.yCtr()));
   }
   minY(x) {
-    if (x < super.xCtr()) return int(this.yMin + (super.xCtr() - x));
-    else return int(this.yMin + (x - super.xCtr()));
+    if (x < this.xCtr()) return int(this.yMin + (this.xCtr() - x));
+    else return int(this.yMin + (x - this.xCtr()));
   }
   maxY(x) {
-    if (x < super.xCtr()) return int(this.yMax - (super.xCtr() - x));
-    else return int(this.xMax - (x - super.xCtr()));
+    if (x < this.xCtr()) return int(this.yMax - (this.xCtr() - x));
+    else return int(this.xMax - (x - this.xCtr()));
   }
 
   //COMPOSITION
@@ -61,13 +61,13 @@ class Canvas extends Cell {
     var q = new Quad(this);
     q.setxy(qx, qy);
     q.setup(false);
-    super.insert(q);
+    this.insert(q);
 
     //and a downmost yellow/gris configuration
     q = new Quad(this);
-    q.setxy(super.xCtr(), this.yMax - super.RAND2(50, 100));
+    q.setxy(this.xCtr(), this.yMax - this.RAND2(50, 100));
     q.setup(true);
-    super.insert(q);
+    this.insert(q);
 
     //now compose a grid, a bit Broadway
     for (let i = 0; i < NRHLINES; i++) {
@@ -75,13 +75,13 @@ class Canvas extends Cell {
       //these HLines help some (most) of the VLines to stop,
       //for example the twins (otherwise they re-unite again).
       var h = new HLine(this);
-      super.insert(h);
+      this.insert(h);
     }
     for (let i = 0; i < NRVLINES; i++) {
       //then the VLines and their twins,
       //the Hlines must be there already
       var v = new VLine(this);
-      super.insert(v);
+      this.insert(v);
       v.prep();
       if (v.stoppi) {
         var twin = new VLine(this);
@@ -93,7 +93,7 @@ class Canvas extends Cell {
         twin.yMin = y;
         twin.yMax = y;
         twin.prep();
-        super.insert(twin);
+        this.insert(twin);
       }
     } //end for
     this.purge1();
@@ -119,12 +119,12 @@ class Canvas extends Cell {
     } //end for
     for (let i = 0; i < NRMINIS; i++) {
       var m = new Mini(this);
-      super.insert(m);
+      this.insert(m);
       //setup postponed
     } //end for
     for (let i = 0; i < NRMICROS; i++) {
       var m = new Micro(this);
-      super.insert(m);
+      this.insert(m);
       //setup postponed
     } //end for
 
@@ -246,7 +246,7 @@ class Canvas extends Cell {
   /*
   rontgen() {
   grid();
-  super.rontgen(4);
+  this.rontgen(4);
 }*/
 
   count() {
@@ -280,7 +280,7 @@ class Canvas extends Cell {
     line(xCtr, yMax, xMin, yCtr);
   } //end lozenge
 
-  draw(printing) {
+  drawCanvas(printing) {
     //White background is better for printing
     //other wise, black is better for screen.
     this.draw();

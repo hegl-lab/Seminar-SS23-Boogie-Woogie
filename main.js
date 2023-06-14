@@ -20,7 +20,7 @@ function setup() {
   //two-stage random generation supports replay
   victory = new Canvas(width / 2, height / 2);
   victory.setup();
-  frameRate(400);
+  frameRate(60);
 }
 
 function draw() {

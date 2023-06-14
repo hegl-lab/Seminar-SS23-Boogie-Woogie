@@ -9,10 +9,10 @@ class Mini extends Cell {
     this.parent = parent;
     this.dx;
     this.dy;
-    if (super.PROB(0.25)) {
+    if (this.PROB(0.25)) {
       this.dx = 5;
       this.dy = 3; //lying
-    } else if (super.PROB(0.5)) {
+    } else if (this.PROB(0.5)) {
       this.dy = 5; //standing
       this.dx = 3;
     } else {
@@ -29,9 +29,9 @@ class Mini extends Cell {
     this.hori = true;
     this.verti = true;
     this.stoppi = true;
-    if (super.PROB(0.75)) this.ratio = float(this.dy) / float(this.dx);
+    if (this.PROB(0.75)) this.ratio = float(this.dy) / float(this.dx);
     else this.ratio = -1;
-    this.activation = 800 + super.RAND(200);
+    this.activation = 800 + this.RAND(200);
     this.midlifetrigger = this.activation + 200;
   }
   fast() {
@@ -101,14 +101,14 @@ class Mini extends Cell {
   setup() {
     if (verbose) {
       print("Mini: setup, nesting = ");
-      print(super.nesting());
+      print(this.nesting());
     }
     //based on probabilistic (fuzzy) logic, cf. Zadeh
     //only for not-yet-decomposed Mini's,  of course;
     //the Mini must have reached its final dimensions
-    super.nogrow();
+    this.nogrow();
     var retry = 0;
-    var done = super.cells != null || this.type == "Atom";
+    var done = this.cells != null || this.type == "Atom";
     while (!done) {
       if (retry++ > 1000) done = true;
       var num = floor(random(22));
@@ -313,13 +313,13 @@ class Mini extends Cell {
     // let x,y be that center, create internal content, just obe cell.
     var x = (this.xMin + this.xMax) / 2;
     var y = (this.yMin + this.yMax) / 2;
-    if (super.PROB(0.9)) {
+    if (this.PROB(0.9)) {
       cells = new Array[1]();
       var a = new Atom(this);
       var varr =
         this.xMax - this.xMin > 50 && this.yMax - this.yMin > 50
-          ? super.RAND(9, 13)
-          : super.RAND(
+          ? this.RAND(9, 13)
+          : this.RAND(
               5,
               min(this.xMax - this.xMin, this.yMax - this.yMin) / 4
             );
@@ -330,7 +330,7 @@ class Mini extends Cell {
       a.clr = clr.complementary();
       a.hori = false;
       a.verti = false;
-      if (a.boxed()) super.insert(a);
+      if (a.boxed()) this.insert(a);
     } //only 90% of them have a kernel indeed
     this.done();
   } //end setupG
@@ -377,13 +377,13 @@ class Mini extends Cell {
     if (verbose) print("Mini: setupVNU");
     //vertically decomposed mini with N sub-minis and a hLine near Upper edge
     var N;
-    if (super.dydx() > 3) N = 5;
-    else if (super.dydx() > 2) N = 4;
+    if (this.dydx() > 3) N = 5;
+    else if (this.dydx() > 2) N = 4;
     else N = 3;
     var cells = new Array(N);
     var prevs = new Array(N);
     var h = new HLine(this);
-    h.setxy((this.xMin + this.xMax) / 2, this.yMin + 4 + super.RAND(4));
+    h.setxy((this.xMin + this.xMax) / 2, this.yMin + 4 + this.RAND(4));
     h.clr = new Color(WHITE);
     h.setup();
     h.yMin = this.yMin;
@@ -420,7 +420,7 @@ class Mini extends Cell {
     if (verbose) print("Mini: setupVNL");
     //vertically decomposed mini with N sub-minis and a hLine near Lower edge
     var N;
-    if (super.dydx() > 3) {
+    if (this.dydx() > 3) {
       N = 5;
     } else if (dydx() > 2) {
       N = 4;
@@ -430,12 +430,12 @@ class Mini extends Cell {
     var cells = new Array(N);
     var prevs = new Array(N);
     var h = new HLine(this);
-    h.setxy((this.xMin + this.xMax) / 2, this.yMax - 4 - super.RAND(4));
+    h.setxy((this.xMin + this.xMax) / 2, this.yMax - 4 - this.RAND(4));
     h.clr = new Color(WHITE);
     h.setup();
     h.yMax = this.yMax;
     h.yMin = this.yMax - 2 * (this.yMax - h.yCtr());
-    super.insert(h);
+    this.insert(h);
     var yEnd = h.yMin;
     var yStep = (yEnd - this.yMin) / (N - 1);
     var a = new Mini(this);
@@ -446,7 +446,7 @@ class Mini extends Cell {
     a.ratio = -1;
     a.fast();
     prevs[1] = a.clr;
-    super.insert(a);
+    this.insert(a);
     for (var i = 2; i < N; i++) {
       var b = new Mini(this);
       //align them vertically
@@ -458,7 +458,7 @@ class Mini extends Cell {
       b.ratio = -1;
       b.fast();
       prevs[i] = b.clr;
-      super.insert(b);
+      this.insert(b);
     }
     this.done();
   } //setupVNL
@@ -466,9 +466,9 @@ class Mini extends Cell {
   setupHN() {
     //Horizontally oriented composite mini, N sub-minis
     var N;
-    if (super.dydx() < 0.33) {
+    if (this.dydx() < 0.33) {
       N = 5;
-    } else if (super.dydx() < 0.5) {
+    } else if (this.dydx() < 0.5) {
       N = 4;
     } else {
       N = 3;
@@ -494,13 +494,13 @@ class Mini extends Cell {
     a.ratio = -1;
     a.fast();
     prevs[0] = a.clr;
-    super.insert(a);
+    this.insert(a);
     for (var i = 1; i < N; i++) {
       var b = new Mini(this);
       //align them horizontally
       xBegin += xStep;
       b.setxy(
-        int(xBegin) + super.RAND2(-int(xStep / 2), int(+xStep / 2)),
+        int(xBegin) + this.RAND2(-int(xStep / 2), int(+xStep / 2)),
         (this.yMax + this.yMin) / 2
       );
       b.clr = new Color5(GRIS, RED, BLUE, YELLOW, WHITE);

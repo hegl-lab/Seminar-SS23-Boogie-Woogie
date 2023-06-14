@@ -6,11 +6,11 @@ class Micro extends Cell{
           super();
           this.type = "Micro";
           this.parent = parent;
-          this.y = parent.yCtr() + super.RAND(-75,75);
-          this.x = (super.PROB(0.5)) ? parent.xMin + super.RAND(75) : parent.xMax - super.RAND(75);
+          this.y = parent.yCtr() + this.RAND(-75,75);
+          this.x = (this.PROB(0.5)) ? parent.xMin + this.RAND(75) : parent.xMax - this.RAND(75);
           //so micros typically live in the leftmost and in
           //the rightmost left and right corner of a canvas
-          super.setxy(this.x,this.y);
+          this.setxy(this.x,this.y);
           this.hori = true;
           this.verti = true;
           this.stoppi = true;
@@ -18,7 +18,7 @@ class Micro extends Cell{
           this.clr = parent.clr;
           this.epsilon = 10;
           this.activation = 10;
-          this.midlifetrigger = super.activation + 50;
+          this.midlifetrigger = this.activation + 50;
     }
     
     //COMPOSITION
@@ -33,16 +33,16 @@ class Micro extends Cell{
           this.verti = false;
           //so growth is stopped
           if (largeEnough()){
-              super.cells = new Cell[1];
+              this.cells = new Cell[1];
               var a = new Array(this);
-                    a.xMin = super.xCtr() - int(random(10,15));
-                    a.xMax = super.xCtr() + int(random(10,15));
-                    a.yMin = super.yCtr() - int(random(15,20));
-                    a.yMax = super.yCtr() + int(random(15,20));
+                    a.xMin = this.xCtr() - int(random(10,15));
+                    a.xMax = this.xCtr() + int(random(10,15));
+                    a.yMin = this.yCtr() - int(random(15,20));
+                    a.yMax = this.yCtr() + int(random(15,20));
                     a.hori = false; 
                     a.verti = false;
                     a.clr = new Color(YELLOW);
-              super.insert(a);
+              this.insert(a);
               a.cells = new Array[1];
               var b = new Array(a);
                    b.xMax = a.xMax;
@@ -51,13 +51,13 @@ class Micro extends Cell{
                    b.yMin = a.yMin + (a.yMax - a.yMin)/3;
                    b.hori = false; 
                    b.verti = false;
-                   b.clr = (super.PROB(0.6)) ? new Color(GRIS) : new Color(BLACK);
+                   b.clr = (this.PROB(0.6)) ? new Color(GRIS) : new Color(BLACK);
               a.insert(b);
-          }   else super.exit();
+          }   else this.exit();
     }
      largeEnough(){
-             return super.xMax - super.xMin > 40
-                 || super.yMax - super.yMin > 40;
+             return this.xMax - this.xMin > 40
+                 || this.yMax - this.yMin > 40;
     }
     
     //TRIGGERED ACTION      

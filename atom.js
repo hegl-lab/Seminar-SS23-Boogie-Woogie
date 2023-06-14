@@ -3,6 +3,7 @@
 class Atom extends Cell{ 
     //constructors
     constructor(parent,coparent){
+    super(); 
     this.#iniAtom();
     this.parent = parent;
     if (coparent != null) {
