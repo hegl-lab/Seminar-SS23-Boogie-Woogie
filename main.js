@@ -2,31 +2,33 @@
 var seed = -1; //choose any positive integer (-1 means random)
 var speedy = false;
 var rontgen = false;
-var frozen = false; 
+var frozen = false;
 var oldlook = true;
 var boxing = false;
 //boolean sketchFullScreen(){ return false;}
 
 var victory;
 var s; //seed
-function setup(){
-     //if (displayHeight >= 1080) size(1000,1000); else size(900,900);  
-     createCanvas(1000,1000);
-     s = int(random(10000000)); if (seed > 0) s = seed; 
-     randomSeed(s);   print("seed = "); print(s); 
-     //two-stage random generation supports replay
-     victory = new Canvas(width/2,height/2);
-     victory.setup();
-     frameRate(400);
+function setup() {
+  //if (displayHeight >= 1080) size(1000,1000); else size(900,900);
+  createCanvas(500, 500);
+  s = int(random(10000000));
+  if (seed > 0) s = seed;
+  randomSeed(s);
+  print("seed = ");
+  print(s);
+  //two-stage random generation supports replay
+  victory = new Canvas(width / 2, height / 2);
+  victory.setup();
+  frameRate(400);
 }
 
-function draw(){
-     if (!frozen){ 
-         victory.grow(speedy ? 20 : 2);
-         victory.draw(false);
-     }
-     if (rontgen) 
-         victory.rontgen();
+function draw() {
+  if (!frozen) {
+    victory.grow(speedy ? 20 : 2);
+    victory.draw(false);
+  }
+  if (rontgen) victory.rontgen();
 }
 
 /*function keyPressed(){ 

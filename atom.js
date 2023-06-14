@@ -2,17 +2,18 @@
 
 class Atom extends Cell{ 
     //constructors
-    constructor(parent){ //in p5js, the keyword constructor instead of the name of the class for the constructor as in Processing
-        this.#iniAtom(); //the implementation of iniAtom() is in private section
-        this.parent = parent;
-        this.clr = new Color(RED,YELLOW,BLUE,WHITE,GRIS,BLACK); //we create a new instance of class color
-    }  
     constructor(parent,coparent){
     this.#iniAtom();
     this.parent = parent;
-    this.coparent = coparent;
-    this.midlifetrigger = 500;  
-    this.clr = new Color(RED,NAVY,WHITE);
+    if (coparent != null) {
+        this.coparent = coparent;
+        this.midlifetrigger = 500;  
+        this.clr = new Color3(RED,NAVY,WHITE);
+    }
+    else {
+        this.clr = new Color6(RED,YELLOW,BLUE,WHITE,GRIS,BLACK); //we create a new instance of class color
+    }
+
     } 
     //private methods in JavaScrpit are set with a hash # before its name
     #iniAtom(){ //private Atom initializer function 
