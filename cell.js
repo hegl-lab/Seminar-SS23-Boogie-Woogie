@@ -2,7 +2,7 @@
 class Cell {
   //CONCEPTION
   constructor() {
-    const dt = 50; //growth step
+    this.dt = 50; //growth step
     this.type = "Cell";
     this.LEFT__ = 0; //directions
     this.RIGHT_ = 1;
@@ -93,7 +93,7 @@ class Cell {
       while (i < this.cells.length && this.cells[i] != null) i++;
       if (i < this.cells.length) this.cells[i] = c;
       else {
-        print("Cell: INSERT FAILED a", this.cells.length);
+        print("Cell: INSERT FAILED", this.cells.length);
         // c.tell();
       }
     } else {
@@ -114,13 +114,13 @@ class Cell {
             this.cells[i].yCtr() == c.yCtr()
           )
             found = true;
-    if (!found) insert(c);
+    if (!found) this.insert(c);
   }
   insertCells(c) {
     //Apply typically for a quadruple object c, being useless
     //but carrying four this.cells, to be inserted into the canvas
     if (c.cells != null)
-      for (var i = 0; i < c.cells.length; i++) insert(c.cells[i]);
+      for (var i = 0; i < c.cells.length; i++) this.insert(c.cells[i]);
   }
   compress() {
     //get rid of superflupuous null entries in this.cells
@@ -129,7 +129,7 @@ class Cell {
       var old = this.cells.length;
       for (var i = 0; i < this.cells.length; i++)
         if (this.cells[i] != null) cnt++;
-      var newcells = new Array[cnt]();
+      var newcells = new Array(cnt);
       var j = 0;
       for (var i = 0; i < this.cells.length; i++)
         if (this.cells[i] != null) newcells[j++] = this.cells[i];
@@ -152,20 +152,20 @@ class Cell {
     //the cell is supposed to have an extra area of this.epsilon around it,
     //yields true if extended area of this cell contains the other point
     return (
-      xOther >= this.xMin - this.epsilon &&
-      xOther <= this.xMax + this.epsilon &&
-      yOther >= this.yMin - this.epsilon &&
-      yOther <= this.yMax + this.epsilon
+      xOther >= this.xMin - epsilon &&
+      xOther <= this.xMax + epsilon &&
+      yOther >= this.yMin - epsilon &&
+      yOther <= this.yMax + epsilon
     );
   }
 
   boxed() {
     return (
-      (this.coparent == null && paboxed()) ||
+      (this.coparent == null && this.paboxed()) ||
       (this.coparent != null &&
-        ((paboxed() && coboxed()) ||
-          (paboxedXL(150) && coboxed()) ||
-          (paboxed() && coboxedXL(150))))
+        ((this.paboxed() && this.coboxed()) ||
+          (this.paboxedXL(150) && this.coboxed()) ||
+          (this.paboxed() && this.coboxedXL(150))))
     );
   }
 
@@ -228,14 +228,14 @@ class Cell {
   }
 
   bumped(other, epsilon) {
-    return;
-    contains(other.xMin, other.yMin, this.epsilon) ||
-      contains(other.xMin, other.yMax, this.epsilon) ||
-      contains(other.xMax, other.yMin, this.epsilon) ||
-      contains(other.xMax, other.yMax, this.epsilon);
+    return (
+      contains(other.xMin, other.yMin, epsilon) ||
+      contains(other.xMin, other.yMax, epsilon) ||
+      contains(other.xMax, other.yMin, epsilon) ||
+      contains(other.xMax, other.yMax, epsilon));
   }
 
-  bumped(other, epsilon, richting) {
+  bumped_richting(other, epsilon, richting) {
     //eg richting==LEFT__ then bumped means colision around this.xMin side of this cell, etc.
     var b = false;
     var xMid = (this.xMin + this.xMax) / 2;
@@ -245,49 +245,49 @@ class Cell {
     switch (richting) {
       case this.LEFT__:
         b =
-          other.contains(this.xMin, this.yMin, this.epsilon) ||
-          this.contains(other.xMax, other.yMin, this.epsilon) ||
-          other.contains(this.xMin, this.yMid, this.epsilon) ||
-          this.contains(other.xMax, other_yMid, this.epsilon) || //new
-          other.contains(this.xMin, this.yMax, this.epsilon) ||
-          this.contains(other.xMax, other.yMax, this.epsilon);
+          other.contains(this.xMin, this.yMin, epsilon) ||
+          this.contains(other.xMax, other.yMin, epsilon) ||
+          other.contains(this.xMin, yMid, epsilon) ||
+          this.contains(other.xMax, other_yMid, epsilon) || //new
+          other.contains(this.xMin, this.yMax, epsilon) ||
+          this.contains(other.xMax, other.yMax, epsilon);
         break;
       case this.RIGHT_:
         b =
-          other.contains(this.xMax, this.yMin, this.epsilon) ||
-          this.contains(other.xMin, other.yMin, this.epsilon) ||
-          other.contains(this.xMax, this.yMid, this.epsilon) ||
-          this.contains(other.xMin, other_yMid, this.epsilon) || //new
-          other.contains(this.xMax, this.yMax, this.epsilon) ||
-          this.contains(other.xMin, other.yMax, this.epsilon);
+          other.contains(this.xMax, this.yMin, epsilon) ||
+          this.contains(other.xMin, other.yMin, epsilon) ||
+          other.contains(this.xMax, yMid, epsilon) ||
+          this.contains(other.xMin, other_yMid, epsilon) || //new
+          other.contains(this.xMax, this.yMax, epsilon) ||
+          this.contains(other.xMin, other.yMax, epsilon);
         break;
       case this.UPWARD:
         b =
-          other.contains(this.xMin, this.yMax, this.epsilon) ||
-          this.contains(other.xMin, other.yMin, this.epsilon) ||
-          other.contains(this.xMid, this.yMax, this.epsilon) ||
-          this.contains(other_xMid, other.yMin, this.epsilon) || //new
-          other.contains(this.xMax, this.yMax, this.epsilon) ||
-          this.contains(other.xMax, other.yMin, this.epsilon);
+          other.contains(this.xMin, this.yMax, epsilon) ||
+          this.contains(other.xMin, other.yMin, epsilon) ||
+          other.contains(xMid, this.yMax, epsilon) ||
+          this.contains(other_xMid, other.yMin, epsilon) || //new
+          other.contains(this.xMax, this.yMax, epsilon) ||
+          this.contains(other.xMax, other.yMin, epsilon);
         break;
       case this.DNWARD:
         b =
-          other.contains(this.xMin, this.yMin, this.epsilon) ||
-          this.contains(other.xMin, other.yMax, this.epsilon) ||
-          other.contains(this.xMid, this.yMin, this.epsilon) ||
-          this.contains(other_xMid, other.yMax, this.epsilon) || //new
-          other.contains(this.xMax, this.yMin, this.epsilon) ||
-          this.contains(other.xMax, other.yMax, this.epsilon);
+          other.contains(this.xMin, this.yMin, epsilon) ||
+          this.contains(other.xMin, other.yMax, epsilon) ||
+          other.contains(xMid, this.yMin, epsilon) ||
+          this.contains(other_xMid, other.yMax, epsilon) || //new
+          other.contains(this.xMax, this.yMin, epsilon) ||
+          this.contains(other.xMax, other.yMax, epsilon);
         break;
     }
     return b && other.area() > 25; //was b && other.age > other.activation && !(other.clr.isWHITE()&&!this.clr.isGRIS());//a bit ad-hoc, admittedly
   }
 
-  bumped(others, epsilon, richting) {
+  bumped_others(others, epsilon, richting) {
     var test = false;
     for (var i = 0; i < others.length; i++)
       if (others[i] != null && others[i] != this)
-        if (bumped(others[i], this.epsilon, richting)) test = true;
+        if (this.bumped_richting(others[i], epsilon, richting)) test = true;
     return test;
   }
 
@@ -298,12 +298,12 @@ class Cell {
     return (
       this.ratio < 0 ||
       (dx < 5 && dy < 5) || //allow the small ones to start growing
-      (0.8 * this.ratio <= dy / dx && dy / dx <= 1.2 * this.ratio)
+      ((0.8 * this.ratio) <= (dy / dx) && (dy / dx) <= (1.2 * this.ratio))
     );
   }
   twin(other) {
     return (
-      xCtr() == other.xCtr() &&
+      this.xCtr() == other.xCtr() &&
       this.xMin == other.xMin &&
       this.xMax == other.xMax
     );
@@ -339,7 +339,7 @@ class Cell {
   mindist(c, d) {
     //this distance is like the manhattan distance, but
     //now taking the minimum instead of adding x and y.
-    return min8(
+    return this.min8(
       abs(c.xMin - d.xMin),
       abs(c.xMin - d.xMax),
       abs(c.xMax - d.xMin),
@@ -353,17 +353,18 @@ class Cell {
   newbours(dt) {
     //recalculate the set of new neighbours,
     //ie the this.cells bump-able within dx steps
-    this.bours = this.cells;
+    var bours = this.cells;
     if (this.cells != null) {
-      var newbours = new Array[this.cells.length]();
+      var newbours = new Array(this.cells.length);
       var twodx = 2 * dt;
       var j = 0;
       for (var i = 0; i < this.cells.length; i++)
         if (this.cells[i] != null)
-          if (mindist(this, this.cells[i]) <= twodx)
-            newbours[j++] = this.cells[i];
-      this.bours = new Cell(j);
-      for (var i = 0; i < j; i++) this.bours[i] = newbours[i];
+          if (this.mindist(this, this.cells[i]) <= twodx)
+            newbours[j] = this.cells[i];
+      j += 1;
+      this.bours = new Array(j);
+      for (var i = 0; i < j; i++) { bours[i] = newbours[i]; }
     }
   }
 
@@ -375,16 +376,16 @@ class Cell {
       var step = 1;
       this.yMin -= step;
       if (
-        (this.stoppi && bumped(others, this.epsilon, this.DNWARD)) ||
-        !boxed() ||
-        !rated()
+        (this.stoppi && this.bumped_others(others, this.epsilon, this.DNWARD)) ||
+        !this.boxed() ||
+        !this.rated()
       )
         this.yMin += step;
       this.yMax += step;
       if (
-        (this.stoppi && bumped(others, this.epsilon, this.UPWARD)) ||
-        !boxed() ||
-        !rated()
+        (this.stoppi && this.bumped_others(others, this.epsilon, this.UPWARD)) ||
+        !this.boxed() ||
+        !this.rated()
       )
         this.yMax -= step;
     } //so we do backtracking
@@ -392,16 +393,16 @@ class Cell {
       var step = 1;
       this.xMin -= step;
       if (
-        (this.stoppi && bumped(others, this.epsilon, this.LEFT__)) ||
-        !boxed() ||
-        !rated()
+        (this.stoppi && this.bumped_others(others, this.epsilon, this.LEFT__)) ||
+        !this.boxed() ||
+        !this.rated()
       )
         this.xMin += step;
       this.xMax += step;
       if (
-        (this.stoppi && bumped(others, this.epsilon, this.RIGHT_)) ||
-        !boxed() ||
-        !rated()
+        (this.stoppi && this.bumped_others(others, this.epsilon, this.RIGHT_)) ||
+        !this.boxed() ||
+        !this.rated()
       )
         this.xMax -= step;
     }
@@ -416,15 +417,15 @@ class Cell {
     }
   }
   grow() {
-    if (this.age % this.dt == 0) newbours(this.dt);
+    if (this.age % this.dt == 0) { this.newbours(this.dt); }
     //every dx steps update bours
     if (this.age > this.activation) {
-      if (this.parent != null && this.parent.cells != null) grow4self();
-      if (this.cells != null) grow4rec();
+      if (this.parent != null && this.parent.cells != null) this.grow4self();
+      if (this.cells != null) this.grow4rec();
     }
     if (this.age == this.midlifetrigger) {
-      trigger();
-      newbours(this.dt);
+      this.trigger();
+      this.newbours(this.dt);
       //just in case the trigger changes things:
       //update bours (ps means here "neighbours"
     }
@@ -433,8 +434,8 @@ class Cell {
 
   grow_steps(steps) {
     if (steps > 0) {
-      grow();
-      grow_steps(steps - 1);
+      this.grow();
+      this.grow_steps(steps - 1);
     }
   }
   nogrow() {
@@ -452,8 +453,8 @@ class Cell {
 
   exitIfOutLier(canvas) {
     //remove self if x,y outside lozenge
-    if (this.xMax < canvas.xMin(yCtr()) || this.xMin > canvas.xMax(yCtr()))
-      exit();
+    if (this.xMax < canvas.minX(yCtr()) || this.xMin > canvas.maxX(yCtr()))
+      this.exit();
   } //end exitIfOutLier
 
   //TRIGGERED ACTION
@@ -478,47 +479,39 @@ class Cell {
   }
 
   //PRESENTATION
-  orect(xMin, yMin, xMax, yMax) {
-    //old rectangle: add a bit of speckles
-    fill(this.clr.clr);
-    rect(xMin, this.yMin, xMax, this.yMax);
-    noFill();
-    stroke(this.clr.darker().darker().clr);
-    if ((xMax - xMin + this.yMax - this.yMin) % 2 > 0)
-      stroke(this.clr.lighter().clr);
-    else stroke(this.clr.darker().clr);
-    rect(xMin + 1, this.yMin + 1, xMax - 2, this.yMax - 2);
-    fill(this.clr.clr);
-    stroke(this.clr.darker().clr);
-    for (var i = 0; i < 25; i++)
-      for (var j = 0; j < 12; j++)
-        rect(
-          this.xMin + ((i * i + 113 * j) % max(1, this.xMax - this.xMin)),
-          this.yMin + ((i + j * i) % max(1, this.yMax - this.yMin)),
-          0.5,
-          0.5
-        );
-  }
+  // orect(xMin, yMin, xMax, yMax) {
+  //   //old rectangle: add a bit of speckles
+  //   fill(this.clr.clr);
+  //   rect(xMin, this.yMin, xMax, this.yMax);
+  //   noFill();
+  //   stroke(this.clr.darker().darker().clr);
+  //   if ((xMax - xMin + this.yMax - this.yMin) % 2 > 0)
+  //     stroke(this.clr.lighter().clr);
+  //   else stroke(this.clr.darker().clr);
+  //   rect(xMin + 1, this.yMin + 1, xMax - 2, this.yMax - 2);
+  //   fill(this.clr.clr);
+  //   stroke(this.clr.darker().clr);
+  //   for (var i = 0; i < 25; i++)
+  //     for (var j = 0; j < 12; j++)
+  //       rect(
+  //         this.xMin + ((i * i + 113 * j) % max(1, this.xMax - this.xMin)),
+  //         this.yMin + ((i + j * i) % max(1, this.yMax - this.yMin)),
+  //         0.5,
+  //         0.5
+  //       );
+  // }
 
   draw() {
-    fill(this.clr.clr);
+    // fill(this.clr.clr);
     if (boxing) stroke(new Color(BLACK).clr);
-    else stroke(this.clr.clr);
+    // else stroke(this.clr.clr);
     if (this.xMax - this.xMin > 4 && this.yMax - this.yMin > 4) {
-      if (!oldlook)
-        rect(
-          this.xMin,
-          this.yMin,
-          this.xMax - this.xMin,
-          this.yMax - this.yMin
-        );
-      if (oldlook)
-        orect(
-          this.xMin,
-          this.yMin,
-          this.xMax - this.xMin,
-          this.yMax - this.yMin
-        );
+      rect(
+        this.xMin,
+        this.yMin,
+        this.xMax - this.xMin,
+        this.yMax - this.yMin
+      );
     }
     if (this.cells != null) {
       for (var i = this.cells.length - 1; i >= 0; i--) {
@@ -533,13 +526,13 @@ class Cell {
     fill(0, 255, 0);
     stroke(0, 125, 0);
     if (this.hori && this.verti)
-      rect(xCtr() - foppen, yCtr() - foppen, 2 * foppen, 2 * foppen);
+      rect(this.xCtr() - foppen, this.yCtr() - foppen, 2 * foppen, 2 * foppen);
     if (this.hori && !this.verti)
-      rect(xCtr() - 2 * foppen, yCtr() - foppen, 4 * foppen, 2 * foppen);
+      rect(this.xCtr() - 2 * foppen, this.yCtr() - foppen, 4 * foppen, 2 * foppen);
     if (!this.hori && this.verti)
-      rect(xCtr() - foppen, yCtr() - 2 * foppen, 2 * foppen, 4 * foppen);
+      rect(this.xCtr() - foppen, this.yCtr() - 2 * foppen, 2 * foppen, 4 * foppen);
     if (!this.hori && !this.verti)
-      rect(xCtr() - foppen, yCtr() - foppen, 2 * foppen, 2 * foppen);
+      rect(this.xCtr() - foppen, this.yCtr() - foppen, 2 * foppen, 2 * foppen);
     if (this.cells != null) {
       for (var i = 0; i < this.cells.length; i++) {
         if (this.cells[i] != null) {

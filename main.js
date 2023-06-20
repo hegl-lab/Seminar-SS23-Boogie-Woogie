@@ -25,7 +25,7 @@ function setup() {
 
 function draw() {
   if (!frozen) {
-    victory.grow(speedy ? 20 : 2);
+    victory.grow_steps(2);
     victory.draw(false);
   }
   if (rontgen) victory.rontgen();

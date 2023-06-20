@@ -224,7 +224,7 @@ class Canvas extends Cell {
 
   //TRIGGERED ACTION
   trigger() {
-    compress();
+    this.compress();
   }
 
   //PRESENTATION
