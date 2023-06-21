@@ -10,22 +10,22 @@ class HLine extends Cell {
     super();
     this.type = "HLine";
     this.parent = parent;
-    if (parent.type == "Canvas") {
+    if (this.parent.type == "Canvas") {
       this.setxy(
-        this.RAND2(parent.xMin + 100, parent.xMax - 100),
-        this.RAND2(parent.yMin + 100, parent.yMax - 100)
+        this.RAND2(parent.xMin + 100, this.parent.xMax - 100),
+        this.RAND2(parent.yMin + 100, this.parent.yMax - 100)
       );
     } else {
       this.setxy(
-        this.RAND2(parent.xMin + 10, parent.xMax - 10),
-        this.RAND2(parent.yMin + 10, parent.yMax - 10)
+        this.RAND2(parent.xMin + 10, this.parent.xMax - 10),
+        this.RAND2(parent.yMin + 10, this.parent.yMax - 10)
       );
     }
     this.clr = new Color(YELLOW);
     this.hori = true;
     this.stoppi =
-      Math.abs(this.yCtr() - parent.yCtr()) < 50 || this.PROB(0.7);
-    //near parent.yCtr() be a stopper,
+      Math.abs(this.yCtr() - this.parent.yCtr()) < 50 || this.PROB(0.7);
+    //near this.parent.yCtr() be a stopper,
     //to prevent overruning the micros
 
     this.midlifetrigger = this.activation + 1000;
@@ -44,8 +44,8 @@ class HLine extends Cell {
     //setup: creates the internal content for this HLine,
     //fill in details of hline: the famous rhythm planes.
     //PRECONDITION: VLines of canvas to be created first.
-    for (var j = 0; j < parent.cells.length; j++) {
-      var cj = parent.cells[j];
+    for (var j = 0; j < this.parent.cells.length; j++) {
+      var cj = this.parent.cells[j];
       if (cj != this && cj != null && cj.type == "VLine") {
         var coparent = cj;
         var a = new Atom(this, coparent);
@@ -62,8 +62,8 @@ class HLine extends Cell {
     //fill in the internal details with a "rhythm"
     for (var i = 0; i < NRRHYTHMPLANES; i++) {
       var a = new Atom(this, null);
-      a.clr = new Color5(RED, BLUE, WHITE, GRIS, NAVY);
-      var x = int(random(parent.xMin, parent.xMax));
+      a.clr = new Color(GRIS); //new Color5(RED, BLUE, WHITE, GRIS, NAVY);
+      var x = int(random(this.parent.xMin, this.parent.xMax));
       var y = this.yCtr();
       a.xMin = x - 1;
       a.xMax = x + 1;
@@ -109,13 +109,13 @@ class HLine extends Cell {
 
   purge2() {
     //eliminate atoms inside this HLine but outside the lozenge
-    if (parent.type == "Canvas")
+    if (this.parent.type == "Canvas")
       if (this.cells != null)
         for (var i = 0; i < this.cells.length; i++)
           if (this.cells[i] != null)
             if (
-              this.cells[i].xMax < parent.xMin(this.cells[i].yCtr()) ||
-              this.cells[i].xMin > parent.xMax(this.cells[i].yCtr())
+              this.cells[i].xMax < this.parent.minX(this.cells[i].yCtr()) ||
+              this.cells[i].xMin > this.parent.maxX(this.cells[i].yCtr())
             )
               this.cells[i] = null;
     if (verbose) {
@@ -128,7 +128,7 @@ class HLine extends Cell {
     //eliminate cells which did not reach 90% line height
     //and for intersect cells also even check their width
     //PS: warning: don't run this purge action too early.
-    for (var i = 0; i < cells.length; i++)
+    for (var i = 0; i < this.cells.length; i++)
       if (
         this.cells[i] != null &&
         this.cells[i].yMax - this.cells[i].yMin + 1 <

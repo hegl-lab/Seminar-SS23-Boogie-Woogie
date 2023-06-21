@@ -33,8 +33,8 @@ class Micro extends Cell{
           this.verti = false;
           //so growth is stopped
           if (largeEnough()){
-              this.cells = new Cell[1];
-              var a = new Array(this);
+              this.cells = new Array(1);
+              var a = new Micro(this);
                     a.xMin = this.xCtr() - int(random(10,15));
                     a.xMax = this.xCtr() + int(random(10,15));
                     a.yMin = this.yCtr() - int(random(15,20));
@@ -43,18 +43,19 @@ class Micro extends Cell{
                     a.verti = false;
                     a.clr = new Color(YELLOW);
               this.insert(a);
-              a.cells = new Array[1];
-              var b = new Array(a);
+              a.cells = new Array(1);
+              var b = new Atom(a);
                    b.xMax = a.xMax;
                    b.yMax = a.yMax;
                    b.xMin = a.xMin + (a.xMax - a.xMin)/3;
                    b.yMin = a.yMin + (a.yMax - a.yMin)/3;
                    b.hori = false; 
                    b.verti = false;
-                   b.clr = (this.PROB(0.6)) ? new Color(GRIS) : new Color(BLACK);
+                   b.clr = (this.PROB(0.6)) ? new Color(YELLOW) : new Color(BLACK);
               a.insert(b);
           }   else this.exit();
     }
+    
      largeEnough(){
              return this.xMax - this.xMin > 40
                  || this.yMax - this.yMin > 40;
@@ -63,6 +64,6 @@ class Micro extends Cell{
     //TRIGGERED ACTION      
     trigger(){
          if (parent.type == "Canvas") 
-             setup(); 
+             this.setup(); 
     }
 }//end class Micro

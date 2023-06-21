@@ -39,33 +39,38 @@ class Quad extends Cell {
       c.setxy(x, y, 10, 8);
       this.insert(c);
     }
-    // if (faux) this.setupBIS();
+     if (faux) this.setupBIS();
   }
 
-  // setupBIS() {
-  //   //this a a faux quadruple, that is, slighly mis-aligned,
-  //   //which works nice for a group of gris and yellow cells.
-  //   var offset = this.RAND(50);
-  //   this.cells[1].clr = new Color(YELLOW);
-  //   this.cells[1].xMin -= offset;
-  //   this.cells[1].xMax -= offset;
-  //   this.cells[1].hori = true;
-  //   this.cells[2].clr = new Color(YELLOW);
-  // }
+  setupBIS() {
+    //this a a faux quadruple, that is, slighly mis-aligned,
+    //which works nice for a group of gris and yellow cells.
+    var offset = this.RAND(50);
+    this.cells[1].clr = new Color(YELLOW);
+    this.cells[1].xMin -= offset;
+    this.cells[1].xMax -= offset;
+    this.cells[1].hori = true;
+    this.cells[2].clr = new Color(YELLOW);
+  }
 
   //TRIGGERED ACTION
   shrapnel() {
     //insert payload, remove carrier
-    if (this.cells != null)
-      for (var i = 0; i < cells.length; i++) {
-        this.cells[i].verti = this.cells[i].hori;
-        this.cells[i].parent = parent;
-        parent.insert(this.cells[i]);
+    if (this.cells != null) {
+      for (var i = 1; i < this.cells.length; i++) {
+        print("in shrapnel "+ i);
+        var cell = this.cells[i];
+        cell.verti = cell.hori;
+        cell.parent = this.parent;
+        this.parent.insert(cell);
       }
-    if (this.cells != null) exit();
+      if (this.cells != null) {
+        this.exit();
+      }
+    }
   }
 
   trigger() {
-    shrapnel();
+   this.shrapnel();
   }
 } //end class

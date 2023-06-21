@@ -11,7 +11,7 @@ var victory;
 var s; //seed
 function setup() {
   //if (displayHeight >= 1080) size(1000,1000); else size(900,900);
-  createCanvas(500, 500);
+  createCanvas(windowWidth, windowHeight);
   s = int(random(10000000));
   if (seed > 0) s = seed;
   randomSeed(s);
@@ -31,7 +31,7 @@ function draw() {
   if (rontgen) victory.rontgen();
 }
 
-/*function keyPressed(){ 
+function keyPressed(){ 
      if (key == 'b')
          boxing = ! boxing;
      if (key == 'c')
@@ -67,4 +67,4 @@ function draw() {
          oldlook = false;
          setup();
      }
-}*/
+}

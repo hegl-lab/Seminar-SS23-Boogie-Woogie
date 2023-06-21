@@ -1,6 +1,6 @@
 //Copyright (C) <2013> <Loe Feijs and TU/e
 
-//some notes regarding conversion: this was converted to this / casting to instanceof / cells Array had a trickier conversion(might be faulty)
+//some notes regarding conversion: this was converted to this / casting to instanceof / this.cells Array had a trickier conversion(might be faulty)
 class Canvas extends Cell {
   //CONCEPTION
 
@@ -21,7 +21,7 @@ class Canvas extends Cell {
 
   minX(y) {
     if (y < this.yCtr()) return int(this.xMin + (this.yCtr() - y));
-    else return int(this.xMin + (y - yCtr()));
+    else return int(this.xMin + (y - this.yCtr()));
   }
   maxX(y) {
     if (y < this.yCtr()) return int(this.xMax - (this.yCtr() - y));
@@ -40,6 +40,7 @@ class Canvas extends Cell {
   setup() {
     //make a Victory Boogie Woogie tribute composition
     let clr = new Color(RED);
+    console.log(clr.label);
 
     const NRQUADS = 2; //do not change this
     const NRHLINES = 15; //many get purge'd anyhow
@@ -47,11 +48,11 @@ class Canvas extends Cell {
     const NRMINIS = 75; //idem
     const NRMICROS = 20; //idem
 
-    var cells = new Array(); //converted from cells = new Cell[4*NRQUADS + NRHLINES + 2*NRVLINES + NRMINIS + NRMICROS];
-    let totalCells = 4 * NRQUADS + NRHLINES + 2 * NRVLINES + NRMINIS + NRMICROS;
+    this.cells = new Array(4 * NRQUADS + NRHLINES + 2 * NRVLINES + NRMINIS + NRMICROS); //converted from this.cells = new Cell[4*NRQUADS + NRHLINES + 2*NRVLINES + NRMINIS + NRMICROS];
+    /*let totalCells = 4 * NRQUADS + NRHLINES + 2 * NRVLINES + NRMINIS + NRMICROS;
     for (let i = 0; i < totalCells; i++) {
-      cells.push(new Cell());
-    }
+      this.cells.push(new Cell());
+    }*/
 
     this.midlifetrigger = 500;
 
@@ -99,21 +100,21 @@ class Canvas extends Cell {
     this.purge1();
     //then fill in the remaining details of the HLines
     //which will include varersection atoms
-    for (let i = 0; i < cells.length; i++) {
-      if (cells[i] != null && cells[i].type == "HLine") {
-        if (cells[i] instanceof HLine) {
+    for (let i = 0; i < this.cells.length; i++) {
+      if  (this.cells[i] != null && this.cells[i].type == "HLine") {
+        if  (this.cells[i] instanceof HLine) {
           //converted from ((HLine)cells[i]).setup();
-          cells[i].setup();
+          this.cells[i].setup();
         }
       }
     } //end for
     //then fill in the remaining details of the VLines
 
-    for (let i = 0; i < cells.length; i++) {
-      if (cells[i] != null && cells[i].type == "VLine") {
-        if (cells[i] instanceof VLine) {
+    for (let i = 0; i < this.cells.length; i++) {
+      if  (this.cells[i] != null && this.cells[i].type == "VLine") {
+        if  (this.cells[i] instanceof VLine) {
           //converted from ((HLine)cells[i]).setup();
-          cells[i].setup();
+          this.cells[i].setup();
         }
       }
     } //end for
@@ -136,14 +137,14 @@ class Canvas extends Cell {
   //APOPTOSIS
   purge1() {
     //meant for the collection of Hlines and VLines typically:
-    //eliminate some of the cells being either too close anyhow,
+    //eliminate some of the this.cells being either too close anyhow,
     //or HLines vertizontally too close, or VLines horizontally too close,
     //(being too close depends on the width for a VLine and height for an HLine)
     //but avoid removing twins. PS RUN THIS ONLY BEFORE GROWTH, NOT AT MIDLIFETRIGGERS
     for (let i = 0; i < this.cells.length; i++) {
       for (let j = 0; j < this.cells.length; j++) {
-        var ci = cells[i];
-        var cj = cells[j];
+        var cj = this.cells[j];
+        var ci = this.cells[i];
         if (i != j && ci != null && cj != null && !ci.twin(cj)) {
           if (
             (ci.type == "Micro" &&
@@ -164,7 +165,7 @@ class Canvas extends Cell {
               abs(ci.xCtr() - cj.xCtr()) <=
                 3 + (ci.xMax - ci.xMin) / 2 + (cj.xMax - cj.xMin) / 2)
           )
-            cells[i] = null;
+            this.cells[i] = null;
         }
       }
     }
@@ -175,7 +176,7 @@ class Canvas extends Cell {
   } //end purge1
 
   purge2() {
-    //remove cells with x,y outside lozenge
+    //remove this.cells with x,y outside lozenge
     if (this.cells != null)
       for (let i = 0; i < this.cells.length; i++)
         if (this.cells[i] != null) {
@@ -255,6 +256,7 @@ class Canvas extends Cell {
     print(n);
     return n;
   }
+
   lozenge(printing) {
     noStroke();
     if (rontgen) fill(145, 165, 145, 200); //transparent
@@ -283,6 +285,7 @@ class Canvas extends Cell {
   drawCanvas(printing) {
     //White background is better for printing
     //other wise, black is better for screen.
+    log("drawCanvas");
     this.draw();
     this.lozenge(printing);
     if (verbose)

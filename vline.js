@@ -58,7 +58,7 @@ class VLine extends Cell {
     //Precondition: prep() done already
     for (var i = 0; i < NRRHYTHMPLANES; i++) {
       var a = new Atom(this, null);
-      a.clr = new Color6(RED, YELLOW, BLUE, WHITE, GRIS, NAVY);
+      a.clr = new Color(RED); //new Color6(RED, YELLOW, BLUE, WHITE, GRIS, NAVY);
       a.xMin = this.xCtr() - 2;
       a.xMax = this.xCtr() + 3;
       var y = int(random(parent.yMin + 1, parent.yMax - 1));
@@ -124,7 +124,7 @@ class VLine extends Cell {
     //eliminate rhythm cells which did not reach 90% line width
     //and for intersect cells also even check their width
     //PS: warning: don't run this purge action too early.
-    for (var i = 0; i < cells.length; i++) {
+    for (var i = 0; i < this.cells.length; i++) {
       if (
         this.cells[i] != null &&
         this.cells[i].xMax - this.cells[i].xMin + 1 <

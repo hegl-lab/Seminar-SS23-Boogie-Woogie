@@ -9,14 +9,14 @@ class Cell {
     this.UPWARD = 2;
     this.DNWARD = 3;
     this.verbose = false;
-    var type;
+    this.type;
     this.parent = null;
     this.coparent = null;
     this.xMin;
     this.xMax;
     this.yMin;
     this.yMax;
-    this.clr;
+    this.clr = new Color(RED);
     this.hori = false; //if true, it tends to grow horizontally,
     this.verti = false; //if true, it ill grow vertically as well
     this.stoppi = false; //if true, it stops upon bumping on cell.
@@ -91,14 +91,17 @@ class Cell {
     if (this.cells != null) {
       var i = 0;
       while (i < this.cells.length && this.cells[i] != null) i++;
-      if (i < this.cells.length) this.cells[i] = c;
-      else {
+      if (i <= this.cells.length) {
+        this.cells[i] = c;
+        //print("Cell: INSERTED", this.cells[0]);
+        //this.cells[i].tell();
+      } else {
         print("Cell: INSERT FAILED", this.cells.length);
-        // c.tell();
+        //c.tell();
       }
     } else {
       print("Cell: INSERT FAILED");
-      // c.tell();
+      //c.tell();
     }
   }
 
@@ -232,7 +235,8 @@ class Cell {
       contains(other.xMin, other.yMin, epsilon) ||
       contains(other.xMin, other.yMax, epsilon) ||
       contains(other.xMax, other.yMin, epsilon) ||
-      contains(other.xMax, other.yMax, epsilon));
+      contains(other.xMax, other.yMax, epsilon)
+    );
   }
 
   bumped_richting(other, epsilon, richting) {
@@ -298,7 +302,7 @@ class Cell {
     return (
       this.ratio < 0 ||
       (dx < 5 && dy < 5) || //allow the small ones to start growing
-      ((0.8 * this.ratio) <= (dy / dx) && (dy / dx) <= (1.2 * this.ratio))
+      (0.8 * this.ratio <= dy / dx && dy / dx <= 1.2 * this.ratio)
     );
   }
   twin(other) {
@@ -364,7 +368,9 @@ class Cell {
             newbours[j] = this.cells[i];
       j += 1;
       this.bours = new Array(j);
-      for (var i = 0; i < j; i++) { bours[i] = newbours[i]; }
+      for (var i = 0; i < j; i++) {
+        bours[i] = newbours[i];
+      }
     }
   }
 
@@ -376,14 +382,16 @@ class Cell {
       var step = 1;
       this.yMin -= step;
       if (
-        (this.stoppi && this.bumped_others(others, this.epsilon, this.DNWARD)) ||
+        (this.stoppi &&
+          this.bumped_others(others, this.epsilon, this.DNWARD)) ||
         !this.boxed() ||
         !this.rated()
       )
         this.yMin += step;
       this.yMax += step;
       if (
-        (this.stoppi && this.bumped_others(others, this.epsilon, this.UPWARD)) ||
+        (this.stoppi &&
+          this.bumped_others(others, this.epsilon, this.UPWARD)) ||
         !this.boxed() ||
         !this.rated()
       )
@@ -393,14 +401,16 @@ class Cell {
       var step = 1;
       this.xMin -= step;
       if (
-        (this.stoppi && this.bumped_others(others, this.epsilon, this.LEFT__)) ||
+        (this.stoppi &&
+          this.bumped_others(others, this.epsilon, this.LEFT__)) ||
         !this.boxed() ||
         !this.rated()
       )
         this.xMin += step;
       this.xMax += step;
       if (
-        (this.stoppi && this.bumped_others(others, this.epsilon, this.RIGHT_)) ||
+        (this.stoppi &&
+          this.bumped_others(others, this.epsilon, this.RIGHT_)) ||
         !this.boxed() ||
         !this.rated()
       )
@@ -417,7 +427,9 @@ class Cell {
     }
   }
   grow() {
-    if (this.age % this.dt == 0) { this.newbours(this.dt); }
+    if (this.age % this.dt == 0) {
+      this.newbours(this.dt);
+    }
     //every dx steps update bours
     if (this.age > this.activation) {
       if (this.parent != null && this.parent.cells != null) this.grow4self();
@@ -453,7 +465,10 @@ class Cell {
 
   exitIfOutLier(canvas) {
     //remove self if x,y outside lozenge
-    if (this.xMax < canvas.minX(yCtr()) || this.xMin > canvas.maxX(yCtr()))
+    if (
+      this.xMax < canvas.minX(this.yCtr()) ||
+      this.xMin > canvas.maxX(this.yCtr())
+    )
       this.exit();
   } //end exitIfOutLier
 
@@ -478,40 +493,37 @@ class Cell {
     } else print("TRIGGER CALLBACK FAILURE");
   }
 
-  //PRESENTATION
-  // orect(xMin, yMin, xMax, yMax) {
-  //   //old rectangle: add a bit of speckles
-  //   fill(this.clr.clr);
-  //   rect(xMin, this.yMin, xMax, this.yMax);
-  //   noFill();
-  //   stroke(this.clr.darker().darker().clr);
-  //   if ((xMax - xMin + this.yMax - this.yMin) % 2 > 0)
-  //     stroke(this.clr.lighter().clr);
-  //   else stroke(this.clr.darker().clr);
-  //   rect(xMin + 1, this.yMin + 1, xMax - 2, this.yMax - 2);
-  //   fill(this.clr.clr);
-  //   stroke(this.clr.darker().clr);
-  //   for (var i = 0; i < 25; i++)
-  //     for (var j = 0; j < 12; j++)
-  //       rect(
-  //         this.xMin + ((i * i + 113 * j) % max(1, this.xMax - this.xMin)),
-  //         this.yMin + ((i + j * i) % max(1, this.yMax - this.yMin)),
-  //         0.5,
-  //         0.5
-  //       );
-  // }
+  //PRESENTATION;
+  orect(xMin, yMin, xMax, yMax) {
+    //old rectangle: add a bit of speckles
+    fill(this.clr.clr);
+    rect(xMin, yMin, xMax, yMax);
+    noFill();
+    stroke(this.clr.darker().darker().clr);
+    if ((xMax - xMin + yMax - yMin) % 2 > 0)
+      stroke(this.clr.lighter().clr);
+    else stroke(this.clr.darker().clr);
+    rect(xMin + 1, yMin + 1, xMax - 2, yMax - 2);
+    fill(this.clr.clr);
+    stroke(this.clr.darker().clr);
+    for (var i = 0; i < 25; i++)
+      for (var j = 0; j < 12; j++)
+        rect(
+          this.xMin + ((i * i + 113 * j) % max(1, this.xMax - this.xMin)),
+          this.yMin + ((i + j * i) % max(1, this.yMax - this.yMin)),
+          0.5,
+          0.5
+        );
+  }
 
   draw() {
-    // fill(this.clr.clr);
+   // var colr = color(random(200, 255), random(200, 255), random(200, 255));
+    fill(this.clr.clr);
     if (boxing) stroke(new Color(BLACK).clr);
-    // else stroke(this.clr.clr);
+    //else stroke(this.clr.clr);
+
     if (this.xMax - this.xMin > 4 && this.yMax - this.yMin > 4) {
-      rect(
-        this.xMin,
-        this.yMin,
-        this.xMax - this.xMin,
-        this.yMax - this.yMin
-      );
+      rect(this.xMin, this.yMin, this.xMax - this.xMin, this.yMax - this.yMin);
     }
     if (this.cells != null) {
       for (var i = this.cells.length - 1; i >= 0; i--) {
@@ -528,9 +540,19 @@ class Cell {
     if (this.hori && this.verti)
       rect(this.xCtr() - foppen, this.yCtr() - foppen, 2 * foppen, 2 * foppen);
     if (this.hori && !this.verti)
-      rect(this.xCtr() - 2 * foppen, this.yCtr() - foppen, 4 * foppen, 2 * foppen);
+      rect(
+        this.xCtr() - 2 * foppen,
+        this.yCtr() - foppen,
+        4 * foppen,
+        2 * foppen
+      );
     if (!this.hori && this.verti)
-      rect(this.xCtr() - foppen, this.yCtr() - 2 * foppen, 2 * foppen, 4 * foppen);
+      rect(
+        this.xCtr() - foppen,
+        this.yCtr() - 2 * foppen,
+        2 * foppen,
+        4 * foppen
+      );
     if (!this.hori && !this.verti)
       rect(this.xCtr() - foppen, this.yCtr() - foppen, 2 * foppen, 2 * foppen);
     if (this.cells != null) {
