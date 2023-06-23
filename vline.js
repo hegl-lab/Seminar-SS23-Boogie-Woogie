@@ -14,10 +14,10 @@ class VLine extends Cell {
         else
             y = int(random(this.parent.yMin + 5, this.parent.yMax - 5));
         this.xMin = x - 5 - int(random(5));
-        this.xMax = x + 4 - int(random(6));
+        this.xMax = x + 4 + int(random(6));
         if (this.prob(0.05)) {
             this.xMin -= int(random(8, 15));
-            this.xMax += int(random(8, 15))
+            this.xMax += int(random(8, 15));
         }
         this.yMin = y - 1;
         this.yMax = y + 1;
@@ -33,7 +33,7 @@ class VLine extends Cell {
 
     setxy(x, y) {
         this.xMin = x - 8 - int(random(4));
-        this.xMax = x + 7 - int(random(4));
+        this.xMax = x + 7 + int(random(4));
         this.yMin = y - 1;
         this.yMax = y + 1;
     }
