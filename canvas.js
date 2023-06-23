@@ -98,7 +98,7 @@ class Canvas extends Cell {
                 let ci = this.cells[i];
                 let cj = this.cells[j];
                 if (i != j && ci != null && cj != null && !ci.twin(cj)) {
-                    if (((ci.type == "Micro" && cj.type == "Micro"
+                    if ((ci.type == "Micro" && cj.type == "Micro"
                         && abs(ci.xCtr() - cj.xCtr()) < 30 && abs(ci.yCtr() - cj.yCtr()) < 30)
                         || (ci.type == "Mini" && cj.type == "Mini" &&
                             (abs(ci.xCtr() - cj.xCtr()) < 30 && abs(ci.yCtr() - cj.yCtr()) < 30
@@ -106,7 +106,7 @@ class Canvas extends Cell {
                         || (ci.type == "HLine" && cj.type == "HLine"
                             && abs(ci.yCtr() - cj.yCtr()) <= 3 + (ci.yMax - ci.yMin) / 2 + (cj.yMax - cj.yMin) / 2)
                         || (ci.type == "VLine" && cj.type == "VLine"
-                            && abs(ci.xCtr() - cj.xCtr()) <= 3 + (ci.xMax - ci.xMin) / 2 + (cj.xMax - cj.xMin) / 2))) {
+                            && abs(ci.xCtr() - cj.xCtr()) <= 3 + (ci.xMax - ci.xMin) / 2 + (cj.xMax - cj.xMin) / 2)) {
                         this.cells[i] = null;
                     }
                 }

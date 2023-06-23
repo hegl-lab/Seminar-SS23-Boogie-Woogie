@@ -404,6 +404,13 @@ class Cell {
         this.age++;
     }
 
+    grow_steps(steps) {
+        if (steps > 0) {
+            this.grow();
+            this.grow_steps(steps - 1);
+        }
+    }
+
     nogrow() {
         this.hori = false;
         this.verti = false;
