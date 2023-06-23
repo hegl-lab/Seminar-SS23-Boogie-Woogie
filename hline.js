@@ -3,18 +3,18 @@ class HLine extends Cell {
         super();
         this.type = "HLine";
         this.parent = parent;
-        if (parent.type == "Canvas") {
+        if (this.parent.type == "Canvas") {
             this.setxy(
-                this.rand_lo_hi(parent.xMin + 100, parent.xMax - 100),
-                this.rand_lo_hi(parent.yMin + 100, parent.yMax - 100));
+                this.rand_lo_hi(this.parent.xMin + 100, this.parent.xMax - 100),
+                this.rand_lo_hi(this.parent.yMin + 100, this.parent.yMax - 100));
         } else {
             this.setxy(
-                this.rand_lo_hi(parent.xMin + 10, parent.xMax - 10),
-                this.rand_lo_hi(parent.yMin + 10, parent.yMax - 10));
+                this.rand_lo_hi(this.parent.xMin + 10, this.parent.xMax - 10),
+                this.rand_lo_hi(this.parent.yMin + 10, this.parent.yMax - 10));
         }
         this.clr = new Color(YELLOW);
         this.hori = true;
-        this.stoppi = (abs(this.yCtr() - parent.yCtr()) < 50) || this.prob(0.7);
+        this.stoppi = (abs(this.yCtr() - this.parent.yCtr()) < 50) || this.prob(0.7);
         this.midlifetrigger = this.activation + 1000;
         this.cells = new Array(NRATOMS);
         for (let k = 0; k < this.cells.length; k++)
