@@ -150,11 +150,9 @@ class Canvas extends Cell {
         this.compress();
     }
 
-    lozenge(printing) {
+    lozenge() {
         noStroke();
-        if (printing)
-            fill(255, 255, 255, 255);
-        else fill(0, 0, 0, 255);
+        fill(255, 255, 255, 255);
 
         let xMin = (width - MAXX) / 2;
         let xMax = (width + MAXX) / 2 + 1;
@@ -173,8 +171,8 @@ class Canvas extends Cell {
         line(xCtr, yMax, xMin, yCtr);
     }
 
-    draw(printing) {
+    draw() {
         super.draw();
-        this.lozenge(printing);
+        this.lozenge();
     }
 }
