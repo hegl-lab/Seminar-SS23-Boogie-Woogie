@@ -1,7 +1,7 @@
 function setup() {
     createCanvas(windowWidth, windowHeight);
     randomSeed(int(random(10000000)));
-    victory = new Canvas(width / 2, height / 2);
+    victory = new Canvas(windowWidth / 2, windowHeight / 2);
     victory.setup();
     frameRate(60);
 }

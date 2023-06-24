@@ -448,8 +448,8 @@ class Cell {
     }
 
     draw() {
-        noStroke();
         fill(this.clr.clr);
+        stroke(this.clr.clr);
         if (this.xMax - this.xMin > 4 && this.yMax - this.yMin > 4) {
             rect(this.xMin, this.yMin, this.xMax - this.xMin, this.yMax - this.yMin);
         }

@@ -151,8 +151,8 @@ class Canvas extends Cell {
     }
 
     lozenge() {
-        noStroke();
         fill(255, 255, 255, 255);
+        stroke(255, 255, 255, 255);
 
         let xMin = (width - MAXX) / 2;
         let xMax = (width + MAXX) / 2 + 1;
