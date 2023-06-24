@@ -7,7 +7,7 @@ class VLine extends Cell {
         super();
         this.type = "VLine";
         this.parent = parent;
-        let x = int(random(this.parent.xMin + 5, this.parent.xMax + 5));
+        let x = int(random(this.parent.xMin + 5, this.parent.xMax - 5));
         let y;
         if (this.parent.type == "Canvas")
             y = int(random(this.parent.minY(x) + 5, this.parent.maxY(x) - 5));
