@@ -8,5 +8,5 @@ function setup() {
 
 function draw() {
     victory.grow_steps(2);
-    victory.draw(false);
+    victory.draw();
 }
