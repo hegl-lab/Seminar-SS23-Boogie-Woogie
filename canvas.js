@@ -1,7 +1,7 @@
 
-const WINHEIGHT = window.screen.height;
-const MAXX = parseInt(WINHEIGHT / Math.sqrt(2));
-const MAXY = parseInt(WINHEIGHT / Math.sqrt(2));
+const WINSIZE = Math.min(window.screen.height, window.screen.width);
+const MAXX = parseInt(WINSIZE / Math.sqrt(2));
+const MAXY = parseInt(WINSIZE / Math.sqrt(2));
 
 const NRQUADS = 2;
 const NRHLINES = 10;
