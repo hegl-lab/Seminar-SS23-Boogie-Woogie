@@ -1,5 +1,5 @@
 const NRINTERSECTS = 25;
-const NRRHYTHMPLANES = 200;
+const NRRHYTHMPLANES = 75;
 const NRATOMS = NRINTERSECTS + NRRHYTHMPLANES;
 
 class VLine extends Cell {

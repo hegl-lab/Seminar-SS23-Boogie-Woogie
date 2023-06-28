@@ -14,9 +14,9 @@ class Cell {
         this.yMin;
         this.yMax;
         this.clr;
-        this.hori;
-        this.verti;
-        this.stoppi;
+        this.hori = false;
+        this.verti = false;
+        this.stoppi = false;
         this.ratio = -1;
         this.age = 0;
         this.epsilon = 0;
