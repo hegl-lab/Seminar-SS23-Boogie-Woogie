@@ -29,40 +29,6 @@ class HLine extends Cell {
         this.yMax = y + 5 + int(random(4));
     }
 
-    setup() {
-        for (let j = 0; j < this.parent.cells.length; j++) {
-            let cj = this.parent.cells[j];
-            if (cj != this && cj != null && cj.type == "VLine") {
-                let coparent = cj;
-                let a = new Atom(this, coparent);
-                coparent.insert(a);
-                a.xMin = coparent.xCtr() - 1;
-                a.xMax = coparent.xCtr() + 1;
-                a.yMin = this.yCtr() - 1;
-                a.yMax = this.yCtr() + 1;
-                a.ratio = -1;
-                this.insertUnique(a);
-            }
-        }
-        for (let i = 0; i < NRRHYTHMPLANES; i++) {
-            let a = new Atom(this);
-            a.clr.color_5(RED, BLUE, WHITE, GRIS, NAVY);
-            let x = int(random(this.parent.xMin, this.parent.xMax));
-            let y = this.yCtr();
-            a.xMin = x - 1;
-            a.xMax = x + 1;
-            a.yMin = y - 2;
-            a.yMax = y + 2;
-            a.hori = true;
-            a.verti = true;
-            a.stoppi = true;
-            a.epsilon = (this.yMax - this.yMin) / 6;
-            a.ratio = 2.0;
-            this.insert(a);
-        }
-        this.purge1();
-        this.purge2();
-    }
 
     purge1() {
         for (let i = 0; i < this.cells.length; i++) {
@@ -97,6 +63,42 @@ class HLine extends Cell {
                 && (this.cells[i].coparent == null ||
                     this.cells[i].yMax - this.cells[i].yMin + 1 < 0.9 * (this.cells[i].coparent.yMax - this.cells[i].coparent.yMin)))
                 this.cells[i] = null;
+    }
+
+    
+    setup() {
+        for (let j = 0; j < this.parent.cells.length; j++) {
+            let cj = this.parent.cells[j];
+            if (cj != this && cj != null && cj.type == "VLine") {
+                let coparent = cj;
+                let a = new Atom(this, coparent);
+                coparent.insert(a);
+                a.xMin = coparent.xCtr() - 1;
+                a.xMax = coparent.xCtr() + 1;
+                a.yMin = this.yCtr() - 1;
+                a.yMax = this.yCtr() + 1;
+                a.ratio = -1;
+                this.insertUnique(a);
+            }
+        }
+        for (let i = 0; i < NRRHYTHMPLANES; i++) {
+            let a = new Atom(this);
+            a.clr.color_5(RED, BLUE, WHITE, GRIS, NAVY);
+            let x = int(random(this.parent.xMin, this.parent.xMax));
+            let y = this.yCtr();
+            a.xMin = x - 1;
+            a.xMax = x + 1;
+            a.yMin = y - 2;
+            a.yMax = y + 2;
+            a.hori = true;
+            a.verti = true;
+            a.stoppi = true;
+            a.epsilon = (this.yMax - this.yMin) / 6;
+            a.ratio = 2.0;
+            this.insert(a);
+        }
+        this.purge1();
+        this.purge2();
     }
 
     trigger() {

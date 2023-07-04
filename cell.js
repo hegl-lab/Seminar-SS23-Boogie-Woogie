@@ -13,7 +13,7 @@ class Cell {
         this.xMax;
         this.yMin;
         this.yMax;
-        this.clr;
+        this.clr= new Color(WHITE);
         this.hori = false;
         this.verti = false;
         this.stoppi = false;
@@ -89,9 +89,9 @@ class Cell {
     insert(c) {
         if (this.cells != null) {
             let i = 0;
-            while (i < this.cells.length && this.cells[i] != null)
+            while (i <= this.cells.length && this.cells[i] != null)
                 i++;
-            if (i < this.cells.length) {
+            if (i <= this.cells.length) {
                 this.cells[i] = c;
             } else {
                 console.log("Cell: INSERT FAILED");
