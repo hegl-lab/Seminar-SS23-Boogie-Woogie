@@ -5,7 +5,7 @@ const MAXY = parseInt(WINSIZE / Math.sqrt(2));
 
 const NRQUADS = 2;
 const NRHLINES = 10;
-// const NRVLINES = 30;
+const NRVLINES = 30;
 const NRMINIS = 75;
 const NRMICROS = 20;
 
@@ -49,20 +49,20 @@ class Canvas extends Cell {
             this.insert(h);
         }
 
-        // for (let i = 0; i < NRVLINES; i++) {
-        //     let v = new VLine(this);
-        //     this.insert(v);
-        //     v.prep();
-        //     if (v.stoppi) {
-        //         let twin = new VLine(this);
-        //         v.copy(twin);
-        //         let y = (v.yCtr() < this.yMax / 2) ? 6 * this.yMax / 7 : this.yMax / 3;
-        //         twin.yMin = y;
-        //         twin.yMax = y;
-        //         twin.prep();
-        //         this.insert(twin);
-        //     }
-        // }
+        for (let i = 0; i < NRVLINES; i++) {
+            let v = new VLine(this);
+            this.insert(v);
+            v.prep();
+            if (v.stoppi) {
+                let twin = new VLine(this);
+                v.copy(twin);
+                let y = (v.yCtr() < this.yMax / 2) ? 6 * this.yMax / 7 : this.yMax / 3;
+                twin.yMin = y;
+                twin.yMax = y;
+                twin.prep();
+                this.insert(twin);
+            }
+        }
 
         this.purge1();
 
@@ -72,11 +72,11 @@ class Canvas extends Cell {
             }
         }
 
-        // for (let i = 0; i < this.cells.length; i++) {
-        //     if (this.cells[i] != null && this.cells[i].type == "VLine") {
-        //         this.cells[i].setup();
-        //     }
-        // }
+        for (let i = 0; i < this.cells.length; i++) {
+            if (this.cells[i] != null && this.cells[i].type == "VLine") {
+                this.cells[i].setup();
+            }
+        }
 
         for (let i = 0; i < NRMINIS; i++) {
             let m = new Mini(this);

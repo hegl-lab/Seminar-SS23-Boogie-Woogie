@@ -23,7 +23,7 @@ class VLine extends Cell {
         this.yMax = y + 1;
         this.clr = new Color(YELLOW);
         this.hori = false;
-        this.vert = true;
+        this.verti = true;
         this.stoppi = this.prob(0.80);
         this.epsilon = 0;
         this.age = 0;
