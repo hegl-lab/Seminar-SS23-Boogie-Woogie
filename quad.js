@@ -20,7 +20,7 @@ class Quad extends Cell {
     }
 
     setup(faux) {
-        this.setxy(this.xCtr(), this.yCtr(), 100, 100);
+        this.setxy_size(this.xCtr(), this.yCtr(), 100, 100);
         this.cells = new Array(4);
         for (let i = 0; i < 4; i++) {
             let x = this.xCtr();
