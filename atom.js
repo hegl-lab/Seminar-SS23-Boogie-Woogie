@@ -19,12 +19,12 @@ class Atom extends Cell {
     }
 
     split() {
-        var cells = new Array(2);
-        for (let i = 0; i < cells.length; i++) {
-            cells[i] = new Atom(this);
-            cells[i].ratio = -1;
-            cells[i].clr = (i == 0) ? this.clr : this.clr.complementary();
-            cells[i].setxy(this.xCtr() + ((i == 0) ? 4 : -4), this.yCtr());
+        this.cells = new Array(2);
+        for (let i = 0; i < this.cells.length; i++) {
+            this.cells[i] = new Atom(this);
+            this.cells[i].ratio = -1;
+            this.cells[i].clr = (i == 0) ? this.clr : this.clr.complementary();
+            this.cells[i].setxy(this.xCtr() + ((i == 0) ? 4 : -4), this.yCtr());
         }
     }
 
