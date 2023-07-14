@@ -32,7 +32,7 @@ class Mini extends Cell {
         this.stoppi = true;
         if (this.prob(0.75)) this.ratio = (dy) / (dx)
         else this.ratio = -1;
-        this.activation = 800 + this.rand_hi(200);
+        this.activation = 600 + this.rand_hi(200);
         this.midlifetrigger = this.activation + 200;
     }
 
