@@ -3,10 +3,12 @@ class HLine extends Cell {
         super();
         this.type = "HLine";
         this.parent = parent;
+        let x = int(random(WINSIZE/2, window.screen.width*(2/3)));
+        this.rnd = this.parent.yMax - this.parent.yMin;
         if (this.parent.type == "Canvas") {
             this.setxy(
-                this.rand_lo_hi(this.parent.xMin + 100, this.parent.xMax - 100),
-                this.rand_lo_hi(this.parent.yMin + 100, this.parent.yMax - 100));
+                this.rand_lo_hi(this.parent.xMin + this.rnd/5, this.parent.xMax - this.rnd/5),
+                this.rand_lo_hi(this.parent.yMin + this.rnd/5, this.parent.yMax - this.rnd/5));
         } else {
             this.setxy(
                 this.rand_lo_hi(this.parent.xMin + 10, this.parent.xMax - 10),
@@ -14,6 +16,7 @@ class HLine extends Cell {
         }
         this.clr = new Color(YELLOW);
         this.hori = true;
+        this.verti = false;
         this.stoppi = (abs(this.yCtr() - this.parent.yCtr()) < 50) || this.prob(0.7);
         this.midlifetrigger = this.activation + 1000;
         this.cells = new Array(NRATOMS);
@@ -25,8 +28,8 @@ class HLine extends Cell {
     setxy(x, y) {
         this.xMin = x - 1;
         this.xMax = x + 1;
-        this.yMin = y - 6 - int(random(3));
-        this.yMax = y + 5 + int(random(4));
+        this.yMin = y - this.rnd/110 - int(random(this.rnd/130));
+        this.yMax = y + this.rnd/110 + int(random(this.rnd/110));
     }
 
     setup() {
@@ -56,7 +59,7 @@ class HLine extends Cell {
             a.hori = true;
             a.verti = true;
             a.stoppi = true;
-            a.epsilon = (this.yMax - this.yMin) / 6;
+            a.epsilon = (this.yMax - this.yMin) / 3;
             a.ratio = 2.0;
             this.insert(a);
         }

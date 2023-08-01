@@ -450,7 +450,10 @@ class Cell {
     draw() {
         fill(this.clr.clr);
         stroke(this.clr.clr);
-        if (this.xMax - this.xMin > 4 && this.yMax - this.yMin > 4) {
+        let ymin = (window.screen.height - MAXY) / 2;
+        let ymax = (window.screen.height + MAXY) / 2 + 1;
+        let rnd = ymax - ymin;
+        if ((this.xMax - this.xMin) >= rnd/120 && (this.yMax - this.yMin) >= rnd/120) { //Minimum cell size, these values are kind of random, doesnt work with Canvas sizes below ~500 
             rect(this.xMin, this.yMin, this.xMax - this.xMin, this.yMax - this.yMin);
         }
         if (this.cells != null) {

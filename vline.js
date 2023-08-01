@@ -7,18 +7,19 @@ class VLine extends Cell {
         super();
         this.type = "VLine";
         this.parent = parent;
-        let x = int(random(this.parent.xMin + 5, this.parent.xMax - 5));
+        this.rnd = this.parent.yMax - this.parent.yMin;
+        let x = int(random(WINSIZE/2, window.screen.width*(2/3)));
         let y;
         if (this.parent.type == "Canvas")
-            y = int(random(this.parent.minY(x) + 5, this.parent.maxY(x) - 5));
+            y = int(random(this.parent.minY(x) + this.rnd/5, this.parent.maxY(x) - this.rnd/5));
         else
             y = int(random(this.parent.yMin + 5, this.parent.yMax - 5));
-        this.xMin = x - 5 - int(random(5));
-        this.xMax = x + 4 + int(random(6));
-        if (this.prob(0.05)) {
+        this.xMin = x - this.rnd/110 - int(random(this.rnd/130));
+        this.xMax = x + this.rnd/110 + int(random(this.rnd/110));
+        /*if (this.prob(0.05)) {
             this.xMin -= int(random(8, 15));
             this.xMax += int(random(8, 15));
-        }
+        }*/
         this.yMin = y - 1;
         this.yMax = y + 1;
         this.clr = new Color(YELLOW);
@@ -46,15 +47,16 @@ class VLine extends Cell {
         for (let i = 0; i < NRRHYTHMPLANES; i++) {
             let a = new Atom(this);
             a.clr.color_6(RED, YELLOW, BLUE, WHITE, GRIS, NAVY);
-            a.xMin = this.xCtr() - 2;
-            a.xMax = this.xCtr() + 3;
-            let y = int(random(this.parent.yMin + 1, this.parent.yMax - 1));
+            let x = this.xCtr();
+            let y = int(random(this.parent.yMin , this.parent.yMax));
+            a.xMin = x - 2;
+            a.xMax = x + 2;
             a.yMin = y - 1;
             a.yMax = y + 1;
             a.hori = true;
             a.verti = true;
             a.stoppi = true;
-            a.epsilon = (this.xMax - this.xMin) / 7;
+            a.epsilon = (this.xMax - this.xMin) / 3;
             a.ratio = 0.5;
             this.insert(a);
         }
