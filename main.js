@@ -1,4 +1,5 @@
-let frozen = false; 
+let frozen = false;
+let isPlaying = true;
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -6,25 +7,33 @@ function setup() {
     victory = new Canvas(windowWidth / 2, windowHeight / 2);
     victory.setup();
     frameRate(60);
+    setupButtons();
+}
+
+function setupButtons() {
     button1 = createButton('Download');
-    button1.position(windowWidth / 4, windowHeight / 4);
+    button1.position((windowWidth / 4), (windowHeight / 4) + 30);
     button1.mousePressed(downl);
-    button2 = createButton('Pause');
-    button2.position((windowWidth / 4)+10, (windowHeight / 4)+30);
-    button2.mousePressed(freeze);
+
+    button2 = createButton(isPlaying ? 'Pause' : 'Play');
+    button2.position(windowWidth / 4, windowHeight / 4);
+    button2.mousePressed(togglePlayPause);
 }
 
 function draw() {
-    if (!frozen){
+    if (!frozen && isPlaying) {
         victory.grow_steps(2);
         victory.draw();
     }
 }
 
-function downl(){
+function downl() {
     save('vbw.png');
 }
 
-function freeze(){
-    frozen=!frozen;
+function togglePlayPause() {
+    frozen = !frozen;
+    isPlaying = !isPlaying; 
+
+    button2.html(isPlaying ? 'Pause' : 'Play');
 }
